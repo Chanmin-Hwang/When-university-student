@@ -1,54 +1,48 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-double eval_f(int,double [],double);
+void create_func(int,double []);
 void add(int,double [],double [],double []);
+double sum_func(int,double []);
 int main(void)
 {
-	srand(time(NULL));
-
 	int n;
-	double x,f[n+1],g[n+1],h[n+1];
-
-	printf("최대 차수 : ");
+	printf("최고차항의 차수 : ");
 	scanf("%d",&n);
-
-	for (register int i=0;i<n+1;i++)
-		g[i]=rand()/(double)rand();
-
-	for (register int i=0;i<n+1;i++)
-		h[i]=rand()/(double)rand();
-
-	printf("X의 값 : ");
-	scanf("%lf",&x);
-
-	printf("%.2lf\n",eval_f(n,h,x));
-	printf("%.2lf\n",eval_f(n,g,x));
+	double f[n+1],g[n+1],h[n+1],F,G,H;
+	create_func(n,g);
+	create_func(n,h);
 	add(n,f,g,h);
-	printf("%.2lf\n",eval_f(n,f,x));
+	F = sum_func(n,f);
+	G = sum_func(n,g);
+	H = sum_func(n,h);
+	printf("%.2lf = %.2lf + %.2lf\n",F,G,H);
 	return 0;
 }
-double eval_f(int n,double a[],double x)
+void create_func(int n,double func[n+1])
 {
-	double I[n+1],X[n+1],sum = a[0];
-
-	for (int i=0;i<n+1;i++)
-		X[i]=1;
-
-	for (int i=1;i<n+1;i++)
-		for (register int k=1;k<=i;k++)
-			X[i]*=x;
-
-	for (register int i=1;i<n+1;i++)
+	double x;
+	x = rand()/(double)rand();
+	func[0] = rand()/(double)rand();
+	srand(time(NULL));
+	for (int i=1;i<=n;i++)
 	{
-		I[i]=a[i]*X[i];
-		sum+=I[i];
+		func[i] = rand()/(double)rand();
+		for (int k=1;k<=i;k++)
+			func[i] *=x;
 	}
-
-	return sum;
+	return;
 }
 void add(int n,double f[],double g[],double h[])
 {
-	for (register int i=0;i<n+1;i++)
-		f[i]=g[i]+h[i];
+	for (int i=0;i<=n;i++)
+		f[i] = g[i] + h[i];
+	return;
+}
+double sum_func(int n,double func[])
+{
+	double sum = 0;
+	for (int i=0;i<=n;i++)
+		sum += func[i];
+	return sum;
 }
