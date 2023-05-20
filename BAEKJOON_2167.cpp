@@ -1,28 +1,31 @@
 #include <iostream>
+
+#define MAX 301
 using namespace std;
 
-int main(){
-    int N,M,i,j,x,y,k;
-    cin >> N >> M;
-    int arr[N][M];
-    int Sum[N][M];
-    for (i=0;i<N;i++){
-        for (j=0;j<M;j++){
-            cin >> k;
-            arr[i][j] = k;
-        }
-    }
-    Sum[0][0] = arr[0][0];
-    for (i=0;i<N;i++){
-        for (j=1;j<M;j++){
-            Sum[i][j] += Sum[i][j-1];
-        }
-    }
-    
-    cin >> k;
-    for (int o=0;o<k;o++){
-        cin >> i >> j >> x >> y;
-        cout << arr[x][y]-arr[i][j];       
-    }
-    return 0;
+long long dp[MAX][MAX];
+int main() {
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cout.tie(0);
+
+	int n,m;
+	cin >> n>>m;
+	
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= m; j++) {
+			cin >> dp[i][j];
+			dp[i][j] += dp[i][j-1] +dp[i-1][j]-dp[i-1][j-1];
+		}
+	}
+	int k;
+	cin >> k;
+	
+	for (int i = 0; i < k; i++) {
+		int a, b, c, d;
+		cin >> a >> b >> c >> d;
+		cout << dp[c][d] - dp[a - 1][d] - dp[c][b - 1] + dp[a - 1][b - 1]<<'\n';
+	}
+
+	return 0;
 }
